@@ -1,28 +1,24 @@
 pipeline {
     agent any
+
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                // Pulls the code from GitHub
-                git credentialsId: 'github-token', url: 'https://github.com/Genda-phool/jk.git', branch: 'main'
+                echo 'Cloning the repository...'
+                git branch: 'main', url: 'https://github.com/Genda-phool/jk.git'
             }
         }
-        stage('Build') {
+
+        stage('Run Script') {
             steps {
-                // Run your build script here
-                sh './mvnw clean install'  // For Maven-based projects
+                echo 'Running the script...'
+                sh './testscript.sh'
             }
         }
-        stage('Test') {
+
+        stage('Print Success Message') {
             steps {
-                // Run tests
-                sh './mvnw test'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                // Deploy the application (if needed)
-                sh './deploy.sh'  // Replace with your deployment script
+                echo 'Pipeline executed successfully!'
             }
         }
     }
